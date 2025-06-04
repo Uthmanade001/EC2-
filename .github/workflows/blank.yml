@@ -29,4 +29,4 @@ jobs:
             sudo mkdir -p /var/www/html
             sudo mv ~/index.html /var/www/html/
             sudo systemctl restart httpd
-EOF
+            EOF
