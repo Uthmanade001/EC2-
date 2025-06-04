@@ -13,17 +13,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Upload artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: site-files
-          path: index.html
-
-      - name: Download artifact
-        uses: actions/download-artifact@v4
-        with:
-          name: site-files
-          path: ./artifact
+      
 
       - name: Setup SSH key
         uses: webfactory/ssh-agent@v0.8.0
