@@ -1,0 +1,38 @@
+name: EC2 Auto Deploy
+
+on:
+  push:
+    branches: [ "main" ]
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v4
+
+      - name: Set permissions on SSH key
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.AWS_PRIVATE_KEY }}" > ~/.ssh/my-key.pem
+          chmod 600 ~/.ssh/my-key.pem
+
+      - name: Deploy to EC2
+        run: |
+          ssh -o StrictHostKeyChecking=no -i ~/.ssh/my-key.pem ec2-user@13.43.92.137 << 'EOF'
+            sudo yum install -y httpd
+            sudo systemctl enable httpd
+            sudo systemctl start httpd
+            exit
+          EOF
+
+      - name: Upload index.html to EC2
+        run: |
+          scp -o StrictHostKeyChecking=no -i ~/.ssh/my-key.pem index.html ec2-user@13.43.92.137:~/
+
+      - name: Run deploy.sh on EC2
+        run: |
+          scp -o StrictHostKeyChecking=no -i ~/.ssh/my-key.pem deploy.sh ec2-user@13.43.92.137:~/
+          ssh -o StrictHostKeyChecking=no -i ~/.ssh/my-key.pem ec2-user@13.43.92.137 "bash deploy.sh"
