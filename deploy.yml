@@ -16,7 +16,7 @@ jobs:
       - name: Set permissions on SSH key
         run: |
           mkdir -p ~/.ssh
-          echo "${{ secrets.EC2_SSH_KEY }}" > ~/.ssh/my-key.pem
+          echo "${{ secrets.AWS_PRIVATE_KEY }}" > ~/.ssh/my-key.pem
           chmod 600 ~/.ssh/my-key.pem
 
       - name: Deploy to EC2
