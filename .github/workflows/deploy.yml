@@ -19,20 +19,6 @@ jobs:
           echo "${{ secrets.AWS_PRIVATE_KEY }}" > ~/.ssh/my-key.pem
           chmod 600 ~/.ssh/my-key.pem
 
-      - name: Deploy to EC2
+      - name: Test SSH connection
         run: |
-          ssh -o StrictHostKeyChecking=no -i ~/.ssh/my-key.pem ec2-user@13.43.92.137 << 'EOF'
-            sudo yum install -y httpd
-            sudo systemctl enable httpd
-            sudo systemctl start httpd
-            exit
-          EOF
-
-      - name: Upload index.html to EC2
-        run: |
-          scp -o StrictHostKeyChecking=no -i ~/.ssh/my-key.pem index.html ec2-user@13.43.92.137:~/
-
-      - name: Run deploy.sh on EC2
-        run: |
-          scp -o StrictHostKeyChecking=no -i ~/.ssh/my-key.pem deploy.sh ec2-user@13.43.92.137:~/
-          ssh -o StrictHostKeyChecking=no -i ~/.ssh/my-key.pem ec2-user@13.43.92.137 "bash ~/deploy.sh"
+         ssh -v -o StrictHostKeyChecking=no -i ~/.ssh/my-key.pem ec2-user@13.43.92.137 "echo 'Connected to EC2'"
