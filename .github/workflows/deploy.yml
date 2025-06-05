@@ -35,4 +35,4 @@ jobs:
       - name: Run deploy.sh on EC2
         run: |
           scp -o StrictHostKeyChecking=no -i ~/.ssh/my-key.pem deploy.sh ec2-user@13.43.92.137:~/
-          ssh -o StrictHostKeyChecking=no -i ~/.ssh/my-key.pem ec2-user@13.43.92.137 "deploy.sh"
+          ssh -o StrictHostKeyChecking=no -i ~/.ssh/my-key.pem ec2-user@13.43.92.137 "bash ~/deploy.sh"
